@@ -14,28 +14,28 @@ migrate((db) => {
         type: "text",
         required: false,
         presentable: false,
-        options: { min: 0, max: 0 }
+        options: { min: null, max: null }
       },
       {
         name: "aluno1",
         type: "text",
         required: false,
         presentable: false,
-        options: { min: 0, max: 0 }
+        options: { min: null, max: null }
       },
       {
         name: "aluno2",
         type: "text",
         required: false,
         presentable: false,
-        options: { min: 0, max: 0 }
+        options: { min: null, max: null }
       },
       {
         name: "select",
         type: "select",
         required: false,
         presentable: false,
-        options: { maxSelect: 0, values: ["A", "B", "C"] }
+        options: { maxSelect: 1, values: ["A", "B", "C"] }
       }
     ],
     listRule: "",
@@ -58,7 +58,7 @@ migrate((db) => {
         type: "text",
         required: false,
         presentable: false,
-        options: { min: 0, max: 0 }
+        options: { min: null, max: null }
       },
       {
         name: "plano_texto",
@@ -86,7 +86,7 @@ migrate((db) => {
         type: "select",
         required: false,
         presentable: false,
-        options: { maxSelect: 0, values: ["rascunho", "submetido"] }
+        options: { maxSelect: 1, values: ["rascunho", "submetido"] }
       }
     ],
     listRule: "",
