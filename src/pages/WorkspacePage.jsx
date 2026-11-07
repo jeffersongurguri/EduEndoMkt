@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'preact/hooks'
 import confetti from 'canvas-confetti'
 import { WashiTape } from '../components/WashiTape.jsx'
+import { MarkdownWysiwygEditor } from '../components/MarkdownWysiwygEditor.jsx'
 import { DORES } from './SetupPage.jsx'
 import { 
   getCurrentDuplaId, 
@@ -99,25 +100,6 @@ export function WorkspacePage({ onNavigate }) {
     loadData()
   }, [])
 
-  // Inserção rápida de formatação no editor
-  const applyFormatting = (tagStart, tagEnd = '') => {
-    const textarea = document.getElementById('plano-textarea')
-    if (!textarea) return
-
-    const start = textarea.selectionStart
-    const end = textarea.selectionEnd
-    const selected = planoTexto.substring(start, end)
-    const replacement = `${tagStart}${selected || 'texto'}${tagEnd}`
-
-    const newText = planoTexto.substring(0, start) + replacement + planoTexto.substring(end)
-    setPlanoTexto(newText)
-
-    setTimeout(() => {
-      textarea.focus()
-      textarea.setSelectionRange(start + tagStart.length, start + tagStart.length + (selected.length || 5))
-    }, 50)
-  }
-
   // Alterna item do checklist
   const toggleChecklist = (key) => {
     setChecklist(prev => ({ ...prev, [key]: !prev[key] }))
@@ -190,8 +172,6 @@ export function WorkspacePage({ onNavigate }) {
     }
   }
 
-  // Estatísticas
-  const wordCount = planoTexto.trim() ? planoTexto.trim().split(/\s+/).length : 0
   const checklistCount = Object.values(checklist).filter(Boolean).length
 
   if (!dupla || !dorInfo) {
@@ -362,7 +342,7 @@ export function WorkspacePage({ onNavigate }) {
           </div>
         </div>
 
-        {/* PAINEL CENTRAL (EDITOR CADERNO DE NOTAS) - Coluna 8/12 */}
+        {/* PAINEL CENTRAL (EDITOR CADERNO DE NOTAS WYSIWYG) - Coluna 8/12 */}
         <div className="lg:col-span-8">
           <div className="lined-paper rounded-3xl p-4 sm:p-8 border-3 sm:border-4 border-slate-300 relative">
             {/* Espiral Esqueomórfico no lado esquerdo */}
@@ -373,70 +353,13 @@ export function WorkspacePage({ onNavigate }) {
               <WashiTape color="pink" label="PLANO ESTRATÉGICO" />
             </div>
 
-            {/* Barra de Ferramentas / Formatação Tátil */}
-            <div className="sm:ml-8 mb-4 pb-3 border-b-2 border-slate-200 flex flex-wrap items-center justify-between gap-2 select-none">
-              <div className="flex flex-wrap items-center gap-1.5">
-                <button
-                  type="button"
-                  title="Marca-texto Amarelo"
-                  onClick={() => applyFormatting('==', '==')}
-                  className="px-3 py-1.5 rounded-xl bg-amber-200 text-amber-900 text-xs sm:text-sm font-bold border border-amber-300 hover:bg-amber-300 transition-colors shadow-2xs"
-                >
-                  🖊️ Marca-Texto
-                </button>
-
-                <button
-                  type="button"
-                  title="Negrito"
-                  onClick={() => applyFormatting('**', '**')}
-                  className="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-800 text-xs sm:text-sm font-extrabold border border-slate-300 hover:bg-slate-200 transition-colors shadow-2xs"
-                >
-                  B
-                </button>
-
-                <button
-                  type="button"
-                  title="Tópico"
-                  onClick={() => applyFormatting('\n• ')}
-                  className="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-800 text-xs sm:text-sm font-bold border border-slate-300 hover:bg-slate-200 transition-colors shadow-2xs"
-                >
-                  • Tópico
-                </button>
-
-                <button
-                  type="button"
-                  title="Inserir Estrutura Guia"
-                  onClick={() => {
-                    if (confirm('Deseja restaurar o roteiro padrão da atividade?')) {
-                      setPlanoTexto(TEMPLATE_PLANO)
-                    }
-                  }}
-                  className="px-3 py-1.5 rounded-xl bg-blue-50 text-blue-700 text-xs sm:text-sm font-bold border border-blue-200 hover:bg-blue-100 transition-colors shadow-2xs"
-                >
-                  📋 Estrutura Guia
-                </button>
-              </div>
-
-              {/* Contadores */}
-              <div className="text-xs font-mono text-slate-500 flex items-center gap-2">
-                <span>{wordCount} palavras</span>
-                <span>•</span>
-                <span className="text-emerald-700 font-bold hidden sm:inline">Auto-salvamento</span>
-              </div>
-            </div>
-
-            {/* Textarea Esqueomórfico (Linhas pautadas de 44px com tipografia ampla e legível) */}
-            <div className="sm:ml-8">
-              <textarea
-                id="plano-textarea"
-                rows={16}
-                value={planoTexto}
-                onInput={(e) => setPlanoTexto(e.target.value)}
-                placeholder="Comece a redigir o plano de Endomarketing da sua dupla aqui..."
-                className="w-full bg-transparent resize-y font-sans text-base sm:text-lg text-slate-800 leading-[44px] focus:outline-hidden selection:bg-amber-200 border-none p-0 tracking-wide"
-                style={{ minHeight: '440px' }}
-              />
-            </div>
+            {/* Editor Markdown WYSIWYG */}
+            <MarkdownWysiwygEditor
+              value={planoTexto}
+              onChange={setPlanoTexto}
+              onRestoreTemplate={() => setPlanoTexto(TEMPLATE_PLANO)}
+              placeholder="Comece a redigir o plano de Endomarketing da sua dupla aqui..."
+            />
           </div>
         </div>
       </div>
