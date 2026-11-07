@@ -1,0 +1,30 @@
+{
+  "name": "eduendomkt",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node -e \"import('node:fs').then(fs => fs.copyFileSync('dist/index.html', 'dist/200.html'))\"",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:integration": "node scripts/test-integration.js",
+    "deploy:surge": "npm run build && npx surge dist",
+    "setup:pb": "powershell -ExecutionPolicy Bypass -File .\\scripts\\setup-pocketbase-local.ps1",
+    "start:pb": "powershell -ExecutionPolicy Bypass -File .\\scripts\\start-pocketbase.ps1"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.4",
+    "canvas-confetti": "^1.9.4",
+    "lucide-preact": "^1.68.0",
+    "pocketbase": "^0.28.2",
+    "preact": "^11.0.2",
+    "preact-iso": "^2.12.2",
+    "tailwindcss": "^4.3.4"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.10.6",
+    "vite": "^8.3.5",
+    "vitest": "^5.1.0"
+  }
+}
