@@ -4,11 +4,11 @@ import { PanelLeftClose, PanelLeftOpen } from 'lucide-preact'
 import { WashiTape } from '../components/WashiTape.jsx'
 import { MarkdownWysiwygEditor } from '../components/MarkdownWysiwygEditor.jsx'
 import { DORES } from './SetupPage.jsx'
-import { 
-  getCurrentDuplaId, 
-  getDuplaById, 
-  getSubmissaoByDupla, 
-  saveSubmissao 
+import {
+  getCurrentDuplaId,
+  getDuplaById,
+  getSubmissaoByDupla,
+  saveSubmissao
 } from '../lib/pocketbase.js'
 
 // Template inicial para guiar a dupla
@@ -50,7 +50,7 @@ export function WorkspacePage({ onNavigate }) {
     acao3: false,
   })
   const [checklistColapsado, setChecklistColapsado] = useState(false)
-  
+
   // Entregáveis / Links de suporte
   const [links, setLinks] = useState([])
   const [novoLinkUrl, setNovoLinkUrl] = useState('')
@@ -225,7 +225,7 @@ export function WorkspacePage({ onNavigate }) {
 
       {/* GRID DE TRABALHO: PAINEL ESQUERDO (METODOLOGIA) + PAINEL CENTRAL (EDITOR) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        
+
         {/* PAINEL ESQUERDO (METODOLOGIA & CHECKLIST) - Coluna 4/12 (ou colapsado) */}
         {!checklistColapsado && (
           <div className="lg:col-span-4 space-y-6 animate-fade-in">
@@ -240,7 +240,7 @@ export function WorkspacePage({ onNavigate }) {
                 </h2>
                 <div className="flex items-center gap-2">
                   <span className="text-xs sm:text-sm font-bold px-3 py-1 rounded-full bg-amber-200 text-amber-900 border border-amber-300">
-                    {checklistCount} de 3 Prontos
+                    {checklistCount} de 3
                   </span>
                   <button
                     type="button"
@@ -249,14 +249,14 @@ export function WorkspacePage({ onNavigate }) {
                     className="p-1.5 px-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 text-xs font-bold transition-all cursor-pointer flex items-center gap-1 shadow-2xs hover:scale-105"
                   >
                     <PanelLeftClose className="w-4 h-4 text-amber-800" />
-                    <span className="hidden sm:inline">Recolher</span>
+                    <span className="hidden sm:inline"></span>
                   </button>
                 </div>
               </div>
 
               {/* Barra de Progresso Cute */}
               <div className="w-full bg-amber-200/60 rounded-full h-3.5 mb-5 overflow-hidden border border-amber-300">
-                <div 
+                <div
                   className="bg-emerald-500 h-full rounded-full transition-all duration-300 shadow-inner"
                   style={{ width: `${(checklistCount / 3) * 100}%` }}
                 />
@@ -265,19 +265,18 @@ export function WorkspacePage({ onNavigate }) {
               {/* Lista dos 3 Itens Obrigatórios */}
               <div className="space-y-3.5">
                 {/* Ação 1 */}
-                <div 
+                <div
                   onClick={() => toggleChecklist('acao1')}
-                  className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${
-                    checklist.acao1 
-                      ? 'bg-emerald-50 border-emerald-400 shadow-xs' 
-                      : 'bg-white border-slate-200 hover:border-amber-300'
-                  }`}
+                  className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${checklist.acao1
+                    ? 'bg-emerald-50 border-emerald-400 shadow-xs'
+                    : 'bg-white border-slate-200 hover:border-amber-300'
+                    }`}
                 >
                   <div className="flex items-start gap-3">
                     <input
                       type="checkbox"
                       checked={checklist.acao1}
-                      onChange={() => {}}
+                      onChange={() => { }}
                       className="w-6 h-6 rounded-md accent-emerald-600 mt-0.5 cursor-pointer shrink-0"
                     />
                     <div>
@@ -292,19 +291,18 @@ export function WorkspacePage({ onNavigate }) {
                 </div>
 
                 {/* Ação 2 */}
-                <div 
+                <div
                   onClick={() => toggleChecklist('acao2')}
-                  className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${
-                    checklist.acao2 
-                      ? 'bg-emerald-50 border-emerald-400 shadow-xs' 
-                      : 'bg-white border-slate-200 hover:border-amber-300'
-                  }`}
+                  className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${checklist.acao2
+                    ? 'bg-emerald-50 border-emerald-400 shadow-xs'
+                    : 'bg-white border-slate-200 hover:border-amber-300'
+                    }`}
                 >
                   <div className="flex items-start gap-3">
                     <input
                       type="checkbox"
                       checked={checklist.acao2}
-                      onChange={() => {}}
+                      onChange={() => { }}
                       className="w-6 h-6 rounded-md accent-emerald-600 mt-0.5 cursor-pointer shrink-0"
                     />
                     <div>
@@ -319,19 +317,18 @@ export function WorkspacePage({ onNavigate }) {
                 </div>
 
                 {/* Ação 3 */}
-                <div 
+                <div
                   onClick={() => toggleChecklist('acao3')}
-                  className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${
-                    checklist.acao3 
-                      ? 'bg-emerald-50 border-emerald-400 shadow-xs' 
-                      : 'bg-white border-slate-200 hover:border-amber-300'
-                  }`}
+                  className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${checklist.acao3
+                    ? 'bg-emerald-50 border-emerald-400 shadow-xs'
+                    : 'bg-white border-slate-200 hover:border-amber-300'
+                    }`}
                 >
                   <div className="flex items-start gap-3">
                     <input
                       type="checkbox"
                       checked={checklist.acao3}
-                      onChange={() => {}}
+                      onChange={() => { }}
                       className="w-6 h-6 rounded-md accent-emerald-600 mt-0.5 cursor-pointer shrink-0"
                     />
                     <div>
@@ -487,7 +484,7 @@ export function WorkspacePage({ onNavigate }) {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {links.map((item) => (
-              <div 
+              <div
                 key={item.id}
                 className="p-4 rounded-2xl bg-amber-50/70 border-2 border-amber-200 flex flex-col justify-between shadow-xs hover:border-amber-400 transition-colors relative"
               >
