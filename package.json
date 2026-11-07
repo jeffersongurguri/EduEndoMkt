@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:integration": "node scripts/test-integration.js",
-    "deploy:surge": "npm run build && npx surge dist",
+    "deploy:surge": "npm run build && npx surge dist --domain edu-endomkt.surge.sh",
     "setup:pb": "powershell -ExecutionPolicy Bypass -File .\\scripts\\setup-pocketbase-local.ps1",
     "start:pb": "powershell -ExecutionPolicy Bypass -File .\\scripts\\start-pocketbase.ps1"
   },

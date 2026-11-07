@@ -1,9 +1,9 @@
 import PocketBase from 'pocketbase'
 
-// URL do PocketBase (apontando por padrão para variável de ambiente ou base local)
+// URL do PocketBase (apontando por padrão para o PocketBase Cloud ou variável de ambiente)
 export const PB_URL = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_POCKETBASE_URL) ||
   (typeof process !== 'undefined' && process.env?.VITE_POCKETBASE_URL) ||
-  'http://127.0.0.1:8090'
+  'https://8rn4k785l3pd7ed.pwz5.pocketbasecloud.com'
 
 export const pb = new PocketBase(PB_URL)
 pb.autoCancellation(false)

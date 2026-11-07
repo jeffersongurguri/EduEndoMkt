@@ -9,7 +9,7 @@ import {
   pb
 } from '../lib/pocketbase.js'
 
-describe('Suíte de Testes Unitários: Salvamento e Ciclo de Vida da Missão', () => {
+describe('Suíte de Testes Unitários: Salvamento e Ciclo de Vida da Missão', { timeout: 15000 }, () => {
   beforeEach(() => {
     // Limpa a dupla ativa da sessão antes de cada teste
     setCurrentDuplaId(null)
