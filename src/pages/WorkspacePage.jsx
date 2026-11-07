@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'preact/hooks'
 import confetti from 'canvas-confetti'
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-preact'
 import { WashiTape } from '../components/WashiTape.jsx'
 import { MarkdownWysiwygEditor } from '../components/MarkdownWysiwygEditor.jsx'
 import { DORES } from './SetupPage.jsx'
@@ -48,6 +49,7 @@ export function WorkspacePage({ onNavigate }) {
     acao2: false,
     acao3: false,
   })
+  const [checklistColapsado, setChecklistColapsado] = useState(false)
   
   // Entregáveis / Links de suporte
   const [links, setLinks] = useState([])
@@ -224,126 +226,162 @@ export function WorkspacePage({ onNavigate }) {
       {/* GRID DE TRABALHO: PAINEL ESQUERDO (METODOLOGIA) + PAINEL CENTRAL (EDITOR) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        {/* PAINEL ESQUERDO (METODOLOGIA & CHECKLIST) - Coluna 4/12 */}
-        <div className="lg:col-span-4 space-y-6">
-          <div className="bg-[#FAF0E6] rounded-3xl p-4 sm:p-6 shadow-lg border-4 border-[#C8AD8D] relative">
-            <div className="absolute -top-3 left-6 scale-90 sm:scale-100">
-              <WashiTape color="yellow" label="METODOLOGIA 3 AÇÕES" />
-            </div>
+        {/* PAINEL ESQUERDO (METODOLOGIA & CHECKLIST) - Coluna 4/12 (ou colapsado) */}
+        {!checklistColapsado && (
+          <div className="lg:col-span-4 space-y-6 animate-fade-in">
+            <div className="bg-[#FAF0E6] rounded-3xl p-4 sm:p-6 shadow-lg border-4 border-[#C8AD8D] relative">
+              <div className="absolute -top-3 left-6 scale-90 sm:scale-100">
+                <WashiTape color="yellow" label="METODOLOGIA 3 AÇÕES" />
+              </div>
 
-            <div className="flex items-center justify-between pt-2 mb-4 border-b border-[#D8C2A7] pb-3">
-              <h2 className="title-bob-card font-bold text-slate-800 flex items-center gap-2">
-                <span>📌</span> Checklist
-              </h2>
-              <span className="text-xs sm:text-sm font-bold px-3 py-1 rounded-full bg-amber-200 text-amber-900 border border-amber-300">
-                {checklistCount} de 3 Prontos
-              </span>
-            </div>
+              <div className="flex items-center justify-between pt-2 mb-4 border-b border-[#D8C2A7] pb-3">
+                <h2 className="title-bob-card font-bold text-slate-800 flex items-center gap-2">
+                  <span>📌</span> Checklist
+                </h2>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs sm:text-sm font-bold px-3 py-1 rounded-full bg-amber-200 text-amber-900 border border-amber-300">
+                    {checklistCount} de 3 Prontos
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setChecklistColapsado(true)}
+                    title="Recolher Checklist para expandir a área do caderno"
+                    className="p-1.5 px-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 text-xs font-bold transition-all cursor-pointer flex items-center gap-1 shadow-2xs hover:scale-105"
+                  >
+                    <PanelLeftClose className="w-4 h-4 text-amber-800" />
+                    <span className="hidden sm:inline">Recolher</span>
+                  </button>
+                </div>
+              </div>
 
-            {/* Barra de Progresso Cute */}
-            <div className="w-full bg-amber-200/60 rounded-full h-3.5 mb-5 overflow-hidden border border-amber-300">
-              <div 
-                className="bg-emerald-500 h-full rounded-full transition-all duration-300 shadow-inner"
-                style={{ width: `${(checklistCount / 3) * 100}%` }}
-              />
-            </div>
+              {/* Barra de Progresso Cute */}
+              <div className="w-full bg-amber-200/60 rounded-full h-3.5 mb-5 overflow-hidden border border-amber-300">
+                <div 
+                  className="bg-emerald-500 h-full rounded-full transition-all duration-300 shadow-inner"
+                  style={{ width: `${(checklistCount / 3) * 100}%` }}
+                />
+              </div>
 
-            {/* Lista dos 3 Itens Obrigatórios */}
-            <div className="space-y-3.5">
-              {/* Ação 1 */}
-              <div 
-                onClick={() => toggleChecklist('acao1')}
-                className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${
-                  checklist.acao1 
-                    ? 'bg-emerald-50 border-emerald-400 shadow-xs' 
-                    : 'bg-white border-slate-200 hover:border-amber-300'
-                }`}
-              >
-                <div className="flex items-start gap-3">
-                  <input
-                    type="checkbox"
-                    checked={checklist.acao1}
-                    onChange={() => {}}
-                    className="w-6 h-6 rounded-md accent-emerald-600 mt-0.5 cursor-pointer shrink-0"
-                  />
-                  <div>
-                    <h3 className="text-[clamp(1.2rem,3.5vw,1.6rem)] font-bold font-heading text-slate-900 leading-snug">
-                      1. Comunicação & Atração
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
-                      Como chamar a atenção dos colegas antes da aula? (Teasers, cartazes provocativos, figurinhas de WhatsApp).
-                    </p>
+              {/* Lista dos 3 Itens Obrigatórios */}
+              <div className="space-y-3.5">
+                {/* Ação 1 */}
+                <div 
+                  onClick={() => toggleChecklist('acao1')}
+                  className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${
+                    checklist.acao1 
+                      ? 'bg-emerald-50 border-emerald-400 shadow-xs' 
+                      : 'bg-white border-slate-200 hover:border-amber-300'
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <input
+                      type="checkbox"
+                      checked={checklist.acao1}
+                      onChange={() => {}}
+                      className="w-6 h-6 rounded-md accent-emerald-600 mt-0.5 cursor-pointer shrink-0"
+                    />
+                    <div>
+                      <h3 className="text-[clamp(1.2rem,3.5vw,1.6rem)] font-bold font-heading text-slate-900 leading-snug">
+                        1. Comunicação & Atração
+                      </h3>
+                      <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                        Como chamar a atenção dos colegas antes da aula? (Teasers, cartazes provocativos, figurinhas de WhatsApp).
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Ação 2 */}
+                <div 
+                  onClick={() => toggleChecklist('acao2')}
+                  className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${
+                    checklist.acao2 
+                      ? 'bg-emerald-50 border-emerald-400 shadow-xs' 
+                      : 'bg-white border-slate-200 hover:border-amber-300'
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <input
+                      type="checkbox"
+                      checked={checklist.acao2}
+                      onChange={() => {}}
+                      className="w-6 h-6 rounded-md accent-emerald-600 mt-0.5 cursor-pointer shrink-0"
+                    />
+                    <div>
+                      <h3 className="text-[clamp(1.2rem,3.5vw,1.6rem)] font-bold font-heading text-slate-900 leading-snug">
+                        2. Dinâmica Pedagógica Ativa
+                      </h3>
+                      <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                        Qual intervenção prática ou ritual ocorrerá em sala para transformar a postura da turma no calor da aula?
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Ação 3 */}
+                <div 
+                  onClick={() => toggleChecklist('acao3')}
+                  className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${
+                    checklist.acao3 
+                      ? 'bg-emerald-50 border-emerald-400 shadow-xs' 
+                      : 'bg-white border-slate-200 hover:border-amber-300'
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <input
+                      type="checkbox"
+                      checked={checklist.acao3}
+                      onChange={() => {}}
+                      className="w-6 h-6 rounded-md accent-emerald-600 mt-0.5 cursor-pointer shrink-0"
+                    />
+                    <div>
+                      <h3 className="text-[clamp(1.2rem,3.5vw,1.6rem)] font-bold font-heading text-slate-900 leading-snug">
+                        3. Pertencimento & Reconhecimento
+                      </h3>
+                      <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                        Como valorizar os alunos e manter a chama do engajamento acesa ao longo de todo o semestre?
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Ação 2 */}
-              <div 
-                onClick={() => toggleChecklist('acao2')}
-                className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${
-                  checklist.acao2 
-                    ? 'bg-emerald-50 border-emerald-400 shadow-xs' 
-                    : 'bg-white border-slate-200 hover:border-amber-300'
-                }`}
-              >
-                <div className="flex items-start gap-3">
-                  <input
-                    type="checkbox"
-                    checked={checklist.acao2}
-                    onChange={() => {}}
-                    className="w-6 h-6 rounded-md accent-emerald-600 mt-0.5 cursor-pointer shrink-0"
-                  />
-                  <div>
-                    <h3 className="text-[clamp(1.2rem,3.5vw,1.6rem)] font-bold font-heading text-slate-900 leading-snug">
-                      2. Dinâmica Pedagógica Ativa
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
-                      Qual intervenção prática ou ritual ocorrerá em sala para transformar a postura da turma no calor da aula?
-                    </p>
-                  </div>
-                </div>
+              {/* Dica da Dor Selecionada */}
+              <div className="mt-5 p-4 bg-amber-100/90 rounded-2xl border border-amber-300 text-xs sm:text-sm text-amber-900">
+                <span className="font-bold block mb-1 text-sm sm:text-base font-heading">🎯 Foco na Dor {dorInfo.id}:</span>
+                <p className="leading-relaxed">
+                  {dorInfo.desafioChave}
+                </p>
               </div>
-
-              {/* Ação 3 */}
-              <div 
-                onClick={() => toggleChecklist('acao3')}
-                className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${
-                  checklist.acao3 
-                    ? 'bg-emerald-50 border-emerald-400 shadow-xs' 
-                    : 'bg-white border-slate-200 hover:border-amber-300'
-                }`}
-              >
-                <div className="flex items-start gap-3">
-                  <input
-                    type="checkbox"
-                    checked={checklist.acao3}
-                    onChange={() => {}}
-                    className="w-6 h-6 rounded-md accent-emerald-600 mt-0.5 cursor-pointer shrink-0"
-                  />
-                  <div>
-                    <h3 className="text-[clamp(1.2rem,3.5vw,1.6rem)] font-bold font-heading text-slate-900 leading-snug">
-                      3. Pertencimento & Reconhecimento
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
-                      Como valorizar os alunos e manter a chama do engajamento acesa ao longo de todo o semestre?
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Dica da Dor Selecionada */}
-            <div className="mt-5 p-4 bg-amber-100/90 rounded-2xl border border-amber-300 text-xs sm:text-sm text-amber-900">
-              <span className="font-bold block mb-1 text-sm sm:text-base font-heading">🎯 Foco na Dor {dorInfo.id}:</span>
-              <p className="leading-relaxed">
-                {dorInfo.desafioChave}
-              </p>
             </div>
           </div>
-        </div>
+        )}
 
-        {/* PAINEL CENTRAL (EDITOR CADERNO DE NOTAS WYSIWYG) - Coluna 8/12 */}
-        <div className="lg:col-span-8">
+        {/* PAINEL CENTRAL (EDITOR CADERNO DE NOTAS WYSIWYG) - Expansível */}
+        <div className={checklistColapsado ? 'lg:col-span-12 transition-all duration-300' : 'lg:col-span-8 transition-all duration-300'}>
+          {/* Barra para reabrir o checklist quando colapsado */}
+          {checklistColapsado && (
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3 bg-[#FAF0E6] p-3 px-5 rounded-2xl border-3 border-[#C8AD8D] shadow-sm animate-fade-in">
+              <button
+                type="button"
+                onClick={() => setChecklistColapsado(false)}
+                title="Expandir Metodologia & Checklist"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 border border-amber-400 text-xs sm:text-sm font-bold shadow-2xs cursor-pointer transition-all hover:scale-105"
+              >
+                <PanelLeftOpen className="w-4 h-4 text-amber-800" />
+                <span>Mostrar Metodologia & Checklist</span>
+                <span className="px-2 py-0.5 rounded-full bg-amber-200 text-amber-950 text-xs font-extrabold border border-amber-300">
+                  {checklistCount}/3 prontos
+                </span>
+              </button>
+
+              <div className="flex items-center gap-2 text-xs font-bold text-amber-900">
+                <span className="inline-block w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
+                <span>Modo Foco Ativo: Caderno Expandido em Largura Total</span>
+              </div>
+            </div>
+          )}
+
           <div className="lined-paper rounded-3xl p-4 sm:p-8 border-3 sm:border-4 border-slate-300 relative">
             {/* Espiral Esqueomórfico no lado esquerdo */}
             <div className="absolute top-8 bottom-8 left-2 w-4 notebook-spiral opacity-50 pointer-events-none hidden sm:block" />
